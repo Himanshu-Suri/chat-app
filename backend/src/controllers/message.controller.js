@@ -3,10 +3,6 @@ import Message from "../models/message.model.js";
 import { getReceiverSocketId, io } from "../lib/socket.js";
 import cloudinary from "../lib/cloudinary.js";
 
-/**
- * GET USERS FOR SIDEBAR
- * GET /api/messages/users
- */
 export const getUsersForSidebar = async (req, res) => {
   try {
     const loggedInUserId = req.user._id;
@@ -22,10 +18,6 @@ export const getUsersForSidebar = async (req, res) => {
   }
 };
 
-/**
- * GET MESSAGES BETWEEN TWO USERS
- * GET /api/messages/:id
- */
 export const getMessages = async (req, res) => {
   try {
     const { id: userToChatId } = req.params;
@@ -45,10 +37,6 @@ export const getMessages = async (req, res) => {
   }
 };
 
-/**
- * SEND MESSAGE
- * POST /api/messages/:id
- */
 export const sendMessage = async (req, res) => {
   try {
     const { text, image } = req.body;
@@ -69,8 +57,6 @@ export const sendMessage = async (req, res) => {
     });
 
     await newMessage.save();
-
-    // SOCKET.IO REAL-TIME MESSAGE
     const receiverSocketId = getReceiverSocketId(receiverId);
     if (receiverSocketId) {
       io.to(receiverSocketId).emit("newMessage", newMessage);
