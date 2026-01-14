@@ -19,17 +19,16 @@ app.use(cors({
     credentials: true
 }))
 
+app.use("/api/auth" , authRoutes)
+app.use("/api/message" , messageRoute)
+
 if (process.env.NODE_ENV === "production") {
   app.use(express.static(path.join(__dirname, "../frontend/my-react-app/dist")));
 
-  app.get("*", (req, res) => {
+  app.get("/*", (req, res) => {
     res.sendFile(path.join(__dirname, "../frontend/my-react-app", "dist", "index.html"));
   });
 }
-
-
-app.use("/api/auth" , authRoutes)
-app.use("/api/message" , messageRoute)
 
 server.listen(PORT , () => {
     console.log("Server is running!~")
